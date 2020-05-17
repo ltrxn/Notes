@@ -1,0 +1,820 @@
+Notes from Swift's [Language Guide](https://docs.swift.org/swift-book/LanguageGuide/TheBasics.html)
+
+Overview
+
+[I. The Basics](#I. The Basics)
+
+[II. Basic Operators](#II. Basic Operators)
+
+[III. Strings and Characters](#III. Strings and Characters)
+
+[IV. Collection Types](#IV. Collection Types)
+
+[V. Control Flow](#V. Control Flow)
+
+---
+
+
+
+# I. The Basics
+
+## Constants and Variables
+
+Constants are declared with `let` and variables with `var`. Declare multiple on a single line by separating with commas. The following line can be read as “declare a new constant called `variableName`, and give it a value of 5”
+
+```swift
+let variableName = 5
+var variableOne = 5, variableTwo = 10, variableThree == 15
+```
+
+### Type Annotations
+
+Provide a *type annotation* to be clear about the kind of values the variable can store. Read as “...of type…”. Define multiple by adding a single type annotation after the final variable name.
+
+```swift
+var welcomeMessage: String
+```
+
+Once a variable is declared, you can’t declare it again, change it to store values of a different type, or change it into a constant.
+
+### Printing Constants and Variables
+
+To print the current value of a variable, use the `print(_:separator:terminator:)` function.
+
+```swift
+print(“Hello World”)
+```
+
+ By default, the function terminates with a line break. To print without a line break
+
+```swift
+print(someValue, terminator: “”)
+```
+
+Swift uses *string interpolation* to include the name of a constant or variable as a placeholder in a longer string. Prompt Swift to replace it with the value of the variable by wrapping the name in parentheses and escape it with a black slash.
+
+```swift
+print(“Value of friendlyWelcome is \(friendlyWelcome)”)
+```
+
+## Comments
+
+Comments are used to include non executable text, like a note or reminder. They are ignored by the Swift compiler. Single line comments begin with two forward-slashes:
+
+```swift
+// This is a single line comment.
+```
+
+Multiline comments start with `/*` and end with `*/`. You can nest multiline comments*
+
+```swift
+/* This is a comment written
+
+over many lines. */
+```
+
+## Semicolons
+
+Semicolons are not required. Although you can do so if you wish. However, semicolons are required if you want to write multiple separate statements on a single line.
+
+## Integers
+
+Integers are whole numbers with no fractional component.
+
+An 8-bit unsigned integer is of type `UInt8`, and a 32-bit signed is of type `Int32`.
+
+Access the minimum and maximum values of each integer type with its `min` and `max` properties:
+
+```swift
+let minValue = UInt8.min //minValue is equal to 0 and is type UInt8
+```
+
+Swift provides the integer type, `Int`, which has the same size as the current platform’s native word size (on 32-bit, `Int` is the same size as `Int32`). `Int` will typically always be used.UInt is the unsigned integer type. It also has the same size as the platform’s native word size (on 64-bit, `UInt` is the same size as `UInt64`).
+
+## Floating-Point Numbers
+
+Numbers with a fractional component. Floating-point types can represent a wider range of values than integer types. Swift has two signed floating-point number types: `Double` (64-bit, precision at least 15 decimal digits) and `Float` (32-bit, precision at least 6 decimal digits).
+
+## Type Safety and Type Inference
+
+Swift is a *type-safe* language. This means the type of values your code uses is clear (can’t pass an `Int` into a code that requires a `String`). Swift performs *type checks* when compiling your code and flags any mismatched types as errors. 
+
+If the type of a constant or variable is not declared, swift uses *type inference* to work out the appropriate type by examining the values you provide. Type inference is useful when you declare a constant or variable with an initial value because you assign a *literal value* (a value that appears directly in your source code like `42` or `3.14`) to it. 
+
+## Numeric Literals
+
+Integer literals can be written as: *decimal* number (no prefix), *binary* number (`0b` prefix), *octal* number (`0o` prefix), or *hexadecimal* number (`0x` prefix.) All these integer literals will have a decimal value of 17: `17`, `0b10001`, `0o21`, `0x11`.
+
+Floating-point literals can be decimal (with no prefix). They must always have a number on both sides of the decimal point. Decimal floats can also have an optional *exponent*, indicated by an `e` (or `p` for hexadecimal floats). `1.25e2` means 1.25 x 10^2^ or 125.0.
+
+Numeric literals can contain extra formatting for readability. You can pad with extra zeros (`0012.34)` and add underscores (`1_000_000`).
+
+## Numeric Type Conversion
+
+If you are adding two integers with different types, you can create a new variable that is initialized with the inferred and correct type.
+
+Conversions between integers and floating-point numeric types must be made explicit. Without a conversion, you cannot add an integer to a double:
+
+```swift
+let three = 3
+let pointOneFour = 0.14
+let pi = Double(three) + pointOneFour
+```
+
+An integer type can be initialized with a Double or Float value:
+
+```swift
+let integerPi = Int(pi)
+```
+
+## Type Aliases
+
+*Type aliases* define an alternative name for an existing type through the `typealias` keyword. They are useful if you want to refer to an existing type with a contextually more appropriate name, such as working with data of a specific size from an external source. Then, you can use the alias anywhere you might use the original name:
+
+```swift
+typealias AudioSample = UInt16var
+maxAmplitudeFound = AudioSample.min //actually calls UInt16.min.
+```
+
+## Booleans
+
+Swift has a basic *Boolean* type called `Bool`. The two Boolean constant values are `true` and `false`. Results of comparisons are of type `Bool`. 
+
+## Tuples
+
+*Tuples* group multiple values into a single compound value. The values can be of any type. A tuple can group an `Int` and `String` to give the variable or constant two seperate values (“a tuple of type (`Int`, `String`)”):
+
+```swift
+let http404Error = (404, “Not Found”)
+```
+
+You can then decompose a tuple’s content into separate constants or variables:
+
+```swift
+let (statusCode, statusMessage) = http404Error
+let (justStatusCode, _) = http404Error //ignore the second part of the tuple
+```
+
+Alternatively, access the individual element values in a tuple using index numbers:
+
+```swift
+print(“status code is \(http404Error.0)”) // prints “status code is 404”
+```
+
+Or, name the elements in the tuple so you can use the element names later to access:
+
+```swift
+let http200Status = (statusCode:200, description: “ok”)
+print(“status code is \(http200Status.statusCode)”) // prints “status code is 200”
+```
+
+## Optionals
+
+Use *optionals* in situations where a value may be absent. An optional represents two possibilities: there *is* a value, and you can unwrap the optional to access that value; or there *isn’t* a value at all. Here’s an example of when an optional will be used. The `Int` type has an initializer that tries to convert a `String` into an `Int` (`“123”` to `123`). However, not every string can be converted into an integer (like `“hello”`). Because the initializer has a potential to fail, it returns an *optional* `Int`. An optional `Int` is written as `Int`?. The question mark indicates that the value contains either an `Int` or nothing at all.
+
+### nil
+
+To set an optional to a valueless state, assign it to the value `nil`. If you define an optional without providing a default value, the variable is automatically set to `nil` for you. `nil` is the absence of value.
+
+### Forced Unwrapping
+
+You can use an `if` statement to find out whether an optional contains a value by comparing the optional against `nil` through the “equal to” (`==`) or “not equal to” (`!=`) operator. Once its determined that the optional *does* contain a value, you can access its underlying value, or *force unwrap*, by adding an exclamation mark (`!`) to the end of the optional’s name. 
+
+```swift
+if convertedNumber != nil {
+  print(“convertedNumber is \(convertedNumber!)”)
+}
+```
+
+### Optional Binding
+
+*Optional binding* is another way to find out whether an optional contains a value, and if so, to make the value available as a temporary constant or variable. Optional binding can be used with if and while statements to extract the value into a constant or variable as a single action:
+
+```swift
+if let constantName = someOptional {
+  //statements 
+} else {
+  //statements
+}
+```
+
+Code above can be read as “if `someOptional` contains a value, then set a new constant called `constantName` to the value contained the optional.” If it is successful, then the `constantName` constant becomes available for use.
+
+You can include multiple optional bindings and Boolean conditions in a single `if` statement, separated by commas:
+
+```swift
+if let firstNumber = Int(“4”), let secondNumber = Int(“3”) {
+  //statements
+}
+```
+
+### Implicity Unwrapped Optionals
+
+*Implicitly unwrapped optionals* are optionals that will *always* have a value, after that value is first set. These optionals remove the need to check and unwrap the optional’s value every time because it can be safely assumed to have a value all the time. To write an implicitly unwrapped optional, place an exclamation mark (`String!`) rather than a question mark (`String?`). The primary use is during class initialization, when the optional's value is confirmed to exist immediately after the optional is first defined and every point after. You can access implicitly unwrapped optionals without an exclamation mark. 
+
+It's like giving permission for the optional to be force-unwrapped if needed.
+
+## Error Handling
+
+Use *error handling* to respond to error conditions that your program may encounter during execution. Error handling allows you to determine the underlying cause of failure. When a function encounters an error condition, it *throws* an error, which the function’s caller can then *catch*. 
+
+```swift
+func canThrowAnError() throws { }
+```
+
+When you call a function that can throw an error, you prepend the try keyword to the expression:
+
+```swift
+do {
+  try canThrowAnError () {
+    //no error was thrown
+  } catch {
+    //an error was thrown
+  }
+```
+
+A `do` statement creates a new containing scope, allowing errors to be propagated to one or more `catch` clauses:
+
+```swift
+func makeASandwich() throws {
+    // ...
+}
+
+do {
+    try makeASandwich()
+    eatASandwich()
+} catch SandwichError.outOfCleanDishes {
+    washDishes()
+} catch SandwichError.missingIngredients(let ingredients) {
+    buyGroceries(ingredients)
+}
+```
+
+## Assertions and Preconditions
+
+These are checks that happen at runtime. Use them to make sure an essential condition is satisfied before executing any further. Use assertions and preconditions to express the assumptions you make and expectations you have. Assertions help you find mistakes and incorrect assumptions, and preconditions help you detect issues in production. Assertions are checked only in debug builds, but preconditions are checked in debug and production builds. This means, you can add as many assertions without impacting performance.
+
+Write an assertion by calling the `assert(_:_:file:line)` function. Pass this function with a boolean expression and a message to display if the result of the condition is false:
+
+```swift
+let age = -3
+assert(age >= 0, “a person’s age cannot be less than zero”)
+//the assertion is false, so message is displayed
+```
+
+If your code already checks the condition, use `assertionFailue(_:file:line:)` function to indicate that an assertion has failed. Use it when the code has already chcekd that an assertion has failed:
+
+```swift
+if age<0 {
+	assertionFailure("A person's age cannot be less than zero")
+}
+```
+
+Use a precondition whenever a condition has the potential to be false, but *must* be true for your code to continue execution. For example, checking that a subscript is not out of bounds. Call the `precondition(_:_:file:line:)` function:
+
+```swift
+precondition(index > 0, “Index must be greater than zero”) //runs
+```
+
+There’s also the `preconditionFailure(_:file:line:)` function.
+
+`assert` is for sanity checks during testing, whereas `precondition` is for guarding against things that, it they happen, would mean your program could not reasonably proceed.
+
+# II. Basic Operators
+
+An *operator* is a special symbol/phrase that can be used to check, change, or combine values.
+
+## Terminology
+
+*Unary* operators operate on a single target (called *operands*. Unary *prefix* operators appear immediately before their target (`!b`), and unary *postfix* operators appear immediately after (`c!`).
+
+*Binary* operators operate on two targets (`2+3`) and are infix (appear between two targets). 
+
+*Ternary* operators operate on three targets (`a ? b : c`)
+
+## Assignment Operator
+
+The *assignment operator* initializes or updates. `a = b` updates the value of a with the value of `b`.
+
+Elements can be decomposed into multiple variables: `let (x, y) = (1, 2)`
+
+The assignment operator does not itself return a value.
+
+## Arithmetic Operators
+
+Addition (`+`), subtraction (`-`), multiplication (`*`), division (`/`), remainder operator (`%`).
+
+*Unary minus operator* toggles the sign of a numeric value. Use the prefix `-`.
+
+*Unary plus operator* (`+`) returns the value it operates on without change.
+
+## Compound Assignment Operators
+
+These combine assignments with another operation. For example, `+=`.
+
+## Comparison Operators
+
+- Equal to `=`
+- Not equal to `!=`
+- Greater than `>`
+- Less than `<`
+- Greater than or equal to `>=`
+- Less than or equal to `<=`.
+
+You can compare two tuples if they have the same type and the same number of values. If all elements are equal, then the tuples are equal. Comparisons are made left-to-right. They are determined by the tuple’s first element. However, if they are the same, the second elements are compared. Two tuples of type `(String, Bool)` cannot be compared with `<` operator because it can't be applied to `Bool` values
+
+## Ternary Conditional Operator
+
+A special operator with three parts, taking the form `question ? answer1 : answer2`. It’s a shortcut for evaluating one of the two expressions based on whether `question` is true or false. If it’s true, it evaluates `answer1`; otherwise, it evaluates `answer2`.
+
+## Nil-Coalescing Operator
+
+*Nil-coalescing* operator `(a ?? b)` unwraps an optional (`a`) if it contains a value, or returns a default value (`b`) if the optional is nil. This operator is shorthand for `a != nil ? a! : b`.
+
+## Range Operators
+
+*Range operators* are shortcuts for expressing a range of values. 
+
+The *closed range operator* `(a...b)` defines a range that runs from a to b, and *includes* the value `a` and `b`. Useful for iterating over a range like in a `for-in` loop.
+
+```swift
+for index in 1...5 {
+	print("\(index) times 5 is \(index*5)")
+}
+```
+
+The *half-open range operator* `(a..<b)` defines a range from `a` to `b`, but doesn’t include `b`. Good for zero-based lists.
+
+*One-sided range* is created when you omit the value from one side of the range operator. `(2…)` or `(...<2)`. For example, a range that includes all elements of an array from index 2 to the end of the array:
+
+```swift
+for name in names[2...] {
+    print(name)
+}
+```
+
+You can't iterate over a one-sided range that omits a first value, because it isn't clear where iteration should begin. However, you *can* iterate over a one-side range that omits a final value, but include an explicit end condition for the loop.
+
+## Logical Operators
+
+They modify or combine the Boolean logic. Logical NOT (`!a`), logical AND (`a && b`), and logical OR (`a || b`)
+
+Combine multiple logical operators to create longer compound expressions. Swift logical operators are left-associative, meaning that compound expressions evaluate the leftmost subexpression first. You can also add parentheses to make its intent explicit.
+
+# III. Strings and Characters
+
+A *string* is a series of characters.
+
+## String Literals
+
+Predefined String values are *string literals*. A string literal is a sequence of characters surrounded by quotation marks (`“`).
+
+ To create a multiline string literal, surround a sequence of characters by three double quotation marks (`“””`). When your source code includes a line break, write a backslash (`\`). Example:
+
+```swift
+let lineBreaks = """
+
+This string starts with a line break.
+It also ends with a line break.
+
+"""
+```
+
+Escaped *special characters*: `\0` (null character), `\` (backslash), `\t` (horizontal tab), `\n` (line feed), `\r` (carriage return), `\”` (double quotation mark), `\’` (single quotation mark).
+
+An arbitrary Unicode scalar value, written as `\u{n}` where `n` is a 1.8 digit hexadecimal number can create other special characters. Example:
+
+```swift
+let sparklingHeart = "\u{1F496}" // 💖, Unicode scalar U+1F496
+```
+
+Place string literal within *extended delimiters* to include special characters in a string without invoking their effect. Place `#` around `“”` like this `#"Line\nLine2"#`. It will print the line escape sequence rather than printing the string across two lines. When using pound-signs, you change the escape sequence from a single backslash to a backslash infixed with the same number of pound signs. So to actually print across two lines you must write as `#"Line\#nLine2"#`
+
+## Initializing an Empty
+
+StringEmpty string literal: `var emptyString = “”` or use initializer syntax: `var emptyString = String()`.
+
+## String are Value Type
+
+Swift’s `String` type is a *value type*. When you create a new `String` value, the `String` value is *copied* when passed to a function or method. When it’s assigned, a new copy is made. It makes it clear that you wont hat exact `String` value, allowing you to be confident that the string you are passed won't be modified.
+
+## Working with Characters
+
+You can access individual `Character` values for a string by iterating over the string with for-in loop. Alternatively, you can use a stand-alone `Character` variable.
+
+String values can be constructed by passing an array of `Character` values as an argument to its initializer. `let catString = String([“c”, “a”, “t”])`
+
+## Concatenating Strings and Characters
+
+You can add together (concatenate) `String` values with the addition operator. You can also append a `Character` value to a `String` variable with the String type’s `append()` method. 
+
+## String Interpolation
+
+*String interpolation* is a way to construct a new String value from constants, variables, literals, and expressions by including their value inside a string literal. Example:
+
+```swift
+let multiplier = 3
+let message = “\(multiplier) times 2 is \(Double(multiplier)*2.5)
+```
+
+## Unicode
+
+Is an international standard for encoding, representing, and processing text in different writing systems.
+
+## Counting Characters
+
+`count` property of string retrieves a count of the character values in a string. 
+
+```swift
+let word = “hello”
+Word.count // would be 5
+```
+
+## Accessing and Modifying a String
+
+### String Indices
+
+Each string value has an associated *index* type, `String.Index`, which corresponds to the position of each character in the string.
+
+`startIndex` property accesses the position of the first Character of a string. `endIndex` property is the position after the last character in a String. 
+
+Access the indices before and after a given index using the `index(before:)` and `index(after:)` methods of String. To access an index farther away from the given index, you can use `index(_:offsetBy:)`. Example:
+
+```swift
+let greeting = “Guten Tag!”
+greeting[greeting.startIndex] // G
+greeting[greeting.index(before: greeting.endIndex)] // !
+greeting[greeting.index(after: greeting.startIndex) // u
+let index = greeting.index(greeting.startIndex, offsetBy: 7)
+greeting[index] // a
+```
+
+The `indices` property accesses all of the indices of individual characters in a string. (`for index in greeting.indices`).
+
+### Inserting and Removing
+
+Insert a single character into a string at a specified index using the `insert(_:at:)` method or `insert(contentsOf:at:)`:
+
+```swift
+var welcome = “hello”
+welcome.insert(“!”, at: welcome.endIndex) //makes “hello!”
+welcome.insert(contents of: “ there”, at: welcome.index(before: welcome.endIndex)) //makes “hello there!”
+```
+
+Remove a single character with `remove(at:)` or remove a substring a a specified range with `removeSubrange(_:)`
+
+```swift
+welcome.remove(at: welcome.index(before: welcome.endIndex))
+// welcome now equals "hello there"
+
+let range = welcome.index(welcome.endIndex, offsetBy: -6)..<welcome.endIndex
+welcome.removeSubrange(range)
+// welcome now equals "hello"
+```
+
+## Substrings
+
+Substrings have most of the same methods as strings. However, use substrings for only a short amount of time which performing actions on a string. Convert substring to instance of string to store the result for a longer time: `let newString = String(subString)`. You can get substrings from a strong using a subscript or a method like `prefix(_:)`.
+
+## Comparing Strings
+
+String and character equality is checked with the “equal to” operator (`==`) and “not equal to operator (`!=`). Two String or Character values are considered equal if their extended grapheme clusters are canonically equivalent. 
+
+Prefix and suffix equality to check whether a string has a particular string prefix or suffix. Call the string’s `hasPrefix(_:)` and `hasSuffix(_:)`. 
+
+# IV. Collection Types
+
+Three primary *collection* types are arrays, sets, and dictionaries. Arrays are ordered, sets are unordered, and dictionaries are unordered collections of key-value associations. You cannot insert a value of the wrong type into a collection by mistake.
+
+## Mutability of Collections
+
+Collections assigned to a variable are *mutable*, and those assigned to a constant are *immutable*. 
+
+## Array
+
+An *array* stores values of the same type in an ordered list. The same value can appear in an array multiple times at different positions.
+
+The type of a Swift array is written in full as `Array<Element>`, where `Element` is the type of values the array is allowed to store. Array in shorthand is `[Element]`. Create an empty array:
+
+```swift
+varsomeInt = [Int]()
+```
+
+To set all its values to the same default value with a certain size, pass the initializer a default value (called `repeating`) and the number of times you the value is repeated in the new array (called `count`):
+
+```swift
+var threeDoubles = Array(repeating: 0.0, count: 3)
+//type [Double], and equals [0.0, 0.0, 0.0]
+```
+
+Add two existing arrays with compatible types with the addition operator.
+
+```swift
+var anotherThreeDoubles = Array(repeating: 2.5, count: 3)
+var sixDoubles = threeDoubles + anotherThreeDoubles
+```
+
+Initialize an array with an *array literal*:
+
+```swift
+var shoppingList: [String] = [“eggs”, “milk”]
+var shoppingList = [“eggs”, “milk”]
+```
+
+To find out the number of items in an array, use the `count` property.
+Boolean `isEmpty` property checks if the `count` property is equal to 0.
+
+Add a new item to the end of the array by calling the array’s `append(_:)` method. Alternatively, you can append items with the addition assignment operator (`+=`)
+
+Retrieve a value of the array by using *subscript syntax*. Arrays in Swift are always zero-indexed:
+
+```swift
+var firstItem = shoppingList[0]
+```
+
+You can also use subscript syntax to change a range of value at once:
+
+``` swift
+ shoppingList[4...6] = ["bananas", "apples"] //replaces three items with two
+```
+
+Insert an item into the array at a specified index with `insert(_:at:)` method. Remove an item from the array with `remove(at:)`. This method will return the removed item. You can also use the `removeLast()` method. 
+
+You can iterate over the entire set of values in an array with the `for`-in loop:
+
+```swift
+for item in shoppingList {
+	print(item)
+}
+
+```
+
+Use the `enumerated()` method for the integer index of each item as well as its value. For each item, this method returns a tuple composed of an integer and the item:
+
+```swift
+for (index, value) in shoppingList.enumerated() {
+	print(“Item \(index+1): \(value)”)
+}
+```
+
+## Sets
+
+A *set* stores distinct values of the same type in a collection with no defined ordering. Use it when ordering is not important or you need to ensure that there are no duplicates.
+
+A type must be *hashable* inorder to be stored in a set, meaning that it has to be able to compute a *hash value* for itself. A has value is an `Int` value that is the same for all object to compute equally, such that if `a==b`, then `a.hashValue==b.hasValue`.
+
+Create an empty set by using initializer syntax or with an array literal. The set type cannot be inferred from an array literal so you must explicitly declare `Set`:
+
+```swift
+var letters = Set<Character>()
+var favoriteGenres: Set<String> = [“Rock”, “Classical”, “Hip hop”]
+// <String> is unecessary because all the values in the array literal are of the same type.
+favoriteGenres = [] // favoriteGenres is now an empty set, but still of type Set<String>
+```
+
+`.count` property checks the number of items. `.isEmpty` to check if count is equal to zero.
+
+ `.insert(_:)` method to add a new item. `.remove(_:)` removes the item if it's a member of the set and returns the removed value or `nil` if the set did not contain it. All items can be removed with `.removeAll()`. 
+
+Check if a list contains a particular item through `contains(_:)` method.
+
+### Set Operations
+
+`a.intersection(b)` method creates a new set with only the values common in both sets. `a.symmetricDifference(b)` creates a new set with values in either sets, but not both. `a.union(b)` creates a new set with all the values in both sets. `a.subtracting(b)` creates a new set with values not in the specific set (keeps `a`’s values).
+
+### Set Membership
+
+`==` determines whether two sets contain all of the same values.
+
+`isSubset(of:)` determines whether all of the values of a set are contained in the specified set. 
+
+`isSuperset(of:)` determines whether a set contains all of the values in a specified set. 
+
+`isStrictSubset(of:)`/`isStrictSuperset(of:)` determines whether a set is a subset or superset, but not equal to, a specified set. 
+
+`isDisjoint(with:)` determines whether two sets have no values in common.
+
+## Dictionaries
+
+A *dictionary* stores associations between keys and values (of the same type) in a collection with no defined ordering. Each value has a unique *key*. Use a dictionary when you need to look up values based on their identifier.
+
+The type of a Swift dictionary written in full: `Dictionary<Key, Value>`. In shorthand form: `[Key: Value]`.
+
+Create an empty dictionary of a certain type with its initializer syntax: 
+
+```swift
+var namesOfIntegers = [Int: String]()
+var namesOfIntegers2 = [:] // when context provides the type
+```
+
+ Create a dictionary with a dictionary literal written as *key-value pairs*:
+
+```swift
+var airports: [String: String] = [“YYZ”: “Toronto Pearson”, “DUB: “Dublin”]
+var airports = [“YYZ”: “Toronto Pearson”, “DUB: “Dublin”] //shorter form
+```
+
+
+
+Find out the number of items with its read-only `count` property. Use Boolean `isEmpty` property to check if count is equal to 0.
+
+Add new item with subscript syntax; use a new key as the subscript index: 
+
+```swift
+airports[“LHR”] = “London”
+```
+
+`updateValue(_:forKey:)` can update the value for a particular key and returns the *old* value after update. It returns an optional value because it returns `nil` if no value existed previously:
+
+```swift
+if let oldValue = airports.updateValue("Dublin Airport", forKey: "DUB") {
+	prints("The old calue for DUB was \(oldValue).")
+}
+```
+
+Use subscript syntax for retrieving a value from the dictionary using a key, but it will return an optional value. You can also use subscript syntax to remove a key-value pair by assigning a value of nil for that key:
+
+```swift
+aiports["APL"] = "Apple International"
+airports["APL"] = nil
+//APL removed from dictionary
+```
+
+ Or, you can remove a pair with the `removeValue(forKey:)` method (returns removed value if it exists, or returns `nil` if no value existed.
+
+When iterating over a dictionary with a `for-in` loop, each item is returned as a `(key, value)` tuple. Decompose by:
+
+```swift
+for (airportCode, airportName) in airports { … }
+```
+
+Access an iterable collection of a dictionary’s keys or values by accessing its `keys` and `values` properties. Able to put it in an array as well:
+
+```swift
+for airportCode in airports.keys { … }
+let airportNames = airports.values
+```
+
+Since `dictionary` lacks defined ordering, use `sorted()` on a dictionary’s `keys` or `values` property to iterate in a specific order.
+
+# V. Control Flow
+
+Swift has a variety of control flow statements such as the following: `if`, `guard`, `while` loops, `switch` statements, and `for-in` loops. Statements like `break` and `continue`transfer the flow of execution to another point in your code.
+
+## For-In Loops
+
+Use *for-in* loops to iterate over a sequence. Use them to iterate through arrays, dictionaries, or ranges.
+
+```swift
+for index in 1...5 {...}
+```
+
+The sequence is being iterated from 1 to 5, inclusive. The value of `index` is initially set to the first number of the range, `1`. After the statements are executed, `index` is updated to contain the second value of the range, `2`. `index` is constant whose value is set at the start of each iteration of the loop.
+
+Ignore the values by using an underscore in place of a variable name.:
+
+```swift
+for _ in 0...<5 {...} //runs statements five times.
+```
+
+`stride(from:to:by:)` function skips values. `stride(from:through:by:)` is a closed range.
+
+## While Loops
+
+A *while loop* performs a set of statements until a condition becomes `false`.  The two types:
+
+- `while` evaluates its condition at the start of each pass.
+- `repeat-while` evaluates its condition at the end of each pass through the loop.
+
+### While
+
+Starts by evaluating a single condition. A set of statements is repeated until the condition becomes fault:
+
+```swift
+while CONDITION {
+	STATEMENTS
+}
+```
+
+### Repeat-While
+
+Performs a single pass through the loop block first before considering the condition:
+
+```swift
+repeat {
+	STATEMENTs
+} while CONDITION
+```
+
+## Conditional Statements
+
+Two ways to add conditional branches to code: the `if` statement (simple conditions with few possible outcomes) and `switch` statement (complex conditions with multiple possible permutations).
+
+### If
+
+An `if` with a single condition executes a set of statements if the condition is true. 
+
+An `else` clause provides an alternative set of statements if the condition is false.
+
+`else if` makes additional `if` statements.
+
+## Switch
+
+A `switch` statement considers a value  and compares it against several possible matching patterns. Then executing an appropriate block of code based on the first pattern it matches successfully. 
+
+```
+switch SOME VALUE TO CONSIDER {
+	case VALUE1:
+		RESPOND TO VALUE1
+	case VALUE2, VALUE 3:
+		RESPOND TO VALUE 2 or 3
+	default:
+		OTHERWISE, DO SOMTHING ELSE
+}
+```
+
+The `switch` statement consists of multiple posible *cases*. Every `switch` statement must be *exhaustive*, every possible value of the type being considered  must be matched by one of the `switch` cases. If this isn't possible, a default case can be indicated by the `default` keyword (must appear last). The `default`case ensures that the statement is exhaustive.
+
+The entire `swift` statement finishes its execution as soon as the first matching `switch` case is completed, without requiring an explicit `break` statement, avoiding the possibility of executing more than one switch case by mistake.
+
+Case bodies cannot be empty.
+
+### Interval Matching
+
+Values in switch cases can be checked for their inclusion in an interval.  Example of using number interval to provide natural-language count for numbers of any size:
+
+```swift
+let approximateCount = 62
+let naturalCount: String
+switch approximateCount {
+	case 0:
+  	naturalCount = "no"
+  case 1..<5:
+  	naturalCount = "a few"
+  case 5..<12:
+  	naturalCount = "several"
+  default:
+  	naturalCount = "many"
+}
+```
+
+### Tuples
+
+You can use tuples to test multiple values. Each individual element of the tuple can be tested against a different value or interval of values. Use the underscore character (`_`), to match any possible value.
+
+```swift
+let somePoint = (1, 1)
+switch somePoint {
+case (0, 0):
+    print("\(somePoint) is at the origin")
+case (_, 0):
+    print("\(somePoint) is on the x-axis")
+case (0, _):
+    print("\(somePoint) is on the y-axis")
+case (-2...2, -2...2):
+    print("\(somePoint) is inside the box")
+default:
+    print("\(somePoint) is outside of the box")
+}
+// Prints "(1, 1) is inside the box"
+```
+
+### Value Bindings
+
+A `switch` case can name the value(s) it matches to temporary variables for use in the body of the case. This is called *value binding* because values are temporarily bounded to constants/variables.
+
+````swift
+let anotherPoint = (2, 0)
+switch anotherPoint {
+case (let x, 0):
+    print("on the x-axis with an x value of \(x)")
+case (0, let y):
+    print("on the y-axis with a y value of \(y)")
+case let (x, y):
+    print("somewhere else at (\(x), \(y))")
+}
+// Prints "on the x-axis with an x value of 2"
+````
+
+The placeholder constant `x` and `y`temporarily take on one or both tuple values from `anotherPoint`. The value x is assigned to `2`. This switch statement does not have a default case because the final case declares a tuple of two placeholder constants that can match any possible remaining values, making it exhaustive.
+
+### Where
+
+A `where` cause can check for additional conditions,  creating a dynamic filter. 
+
+```swift
+case let (x,y) where x==y:
+```
+
+`x` and `y` will only match the current value if the where clause's condition is true.
+
+### Compound Cases
+
+Multiple switch cases that share the same body can be combined by writing several patterns after `case`, with a comma between each of hte patterns.
+
+```swift
+case "a", "e", "i", "o", "u":
+```
+
+When including value blinding, all patterns of a compound case have to include the same set of value bindings, and each binding has to get a vlaue of the same type from all patterns in the compound case, ensuring that the body can always access a value for the bindings.
+
