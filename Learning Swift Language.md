@@ -12,6 +12,8 @@ Overview
 
 [V. Control Flow](#V. Control Flow)
 
+[VI. Functions](#VI. Functions)
+
 ---
 
 
@@ -89,7 +91,7 @@ Access the minimum and maximum values of each integer type with its `min` and `m
 let minValue = UInt8.min //minValue is equal to 0 and is type UInt8
 ```
 
-Swift provides the integer type, `Int`, which has the same size as the current platform’s native word size (on 32-bit, `Int` is the same size as `Int32`). `Int` will typically always be used.UInt is the unsigned integer type. It also has the same size as the platform’s native word size (on 64-bit, `UInt` is the same size as `UInt64`).
+Swift provides the integer type, `Int`, which has the same size as the current platform’s native word size (on 32-bit, `Int` is the same size as `Int32`). `Int` will typically always be used. UInt is the unsigned integer type. It also has the same size as the platform’s native word size (on 64-bit, `UInt` is the same size as `UInt64`).
 
 ## Floating-Point Numbers
 
@@ -817,4 +819,189 @@ case "a", "e", "i", "o", "u":
 ```
 
 When including value blinding, all patterns of a compound case have to include the same set of value bindings, and each binding has to get a vlaue of the same type from all patterns in the compound case, ensuring that the body can always access a value for the bindings.
+
+```swift
+case (let distance, 0), (0, let distance):
+```
+
+## Control Transfer Statements
+
+These statements can change the order which code is executed:
+
+- `continue`
+- `break`
+- `fallthrough`
+- `return`
+- `throw`
+
+### Continue
+
+Tells a loop to stop what it's doing and start again at the beginning of the next iteration. 
+
+```swift
+let puzzleInput = "great minds think alike"
+var puzzleOutput = ""
+let charactersToRemove: [Character] = ["a", "e", "i", "o", "u", " "]
+for character in puzzleInput {
+    if charactersToRemove.contains(character) {
+        continue
+    }
+    puzzleOutput.append(character)
+}
+print(puzzleOutput)
+// Prints "grtmndsthnklk"
+```
+
+### Break
+
+Ends execution of entire control flow statement (in `switch` or loop statement) immidiately.
+
+When used in a `switch` statement, control transfers to the code after the closing brace `{`. This behavior can be used to match and ignore one or more cases in a `switch` statement. Because the `switch` statement is exhaustive and does not allow empty cases, it is sometimes necessary to deliberately match and ignore a case in order to make your intentions explicit. Write a `break` statement in the body of the case you want to ignore. 
+
+```swift
+let numberSymbol: Character = "三"  // Chinese symbol for the number 3
+var possibleIntegerValue: Int?
+switch numberSymbol {
+case "1", "١", "一", "๑":
+    possibleIntegerValue = 1
+case "2", "٢", "二", "๒":
+    possibleIntegerValue = 2
+case "3", "٣", "三", "๓":
+    possibleIntegerValue = 3
+case "4", "٤", "四", "๔":
+    possibleIntegerValue = 4
+default:
+    break
+}
+if let integerValue = possibleIntegerValue {
+    print("The integer value of \(numberSymbol) is \(integerValue).")
+} else {
+    print("An integer value could not be found for \(numberSymbol).")
+}
+```
+
+Optional binding is used to determine whether the value was found. `possibleIntegerValue` variable has an implicit initial value of `nil` by being an optional type.
+
+### Fallthrough
+
+`switch` statements don't fall through the bottom of each case into the next one. Execution completes as soon as the first matching case is completed (you don't need an explicit `break` statement at the end of every case to prevent fall through). Swift `switch` statements are more concise and predictable, avoiding executing multiple cases by mistake.
+
+If you need C-style fallthrough behavior, use the `fallthrough` keyword:
+
+```swift
+let integerToDescribe = 5
+var description = "The number \(integerToDescribe) is"
+switch integerToDescribe {
+case 2, 3, 5, 7, 11, 13, 17, 19:
+    description += " a prime number, and also"
+    fallthrough
+default:
+    description += " an integer."
+}
+print(description)
+// Prints "The number 5 is a prime number, and also an integer."
+```
+
+Even if the case is executed, it will "fallthrough" and run the `default` case as well (otherwise, directly the next case). 
+
+### Labeled Statements
+
+Sometimes it's useful to be explicit about which loop or conditional statement you want a `break` statement to terminate or the `continue` statement to affect. Mark a loop/conditional statement with a *statement* label. 
+
+A labeled statement is inicated by a label followed by a colon:
+
+```swift
+LABEL NAME: while CONDITION {
+	STATEMENTS
+  break LABEL NAME //this breaks the loop with the same label name
+}
+```
+
+## Early Exit
+
+`guard` statement executes if the condition is true and continues after the closing brace. `guard` statement always has an `else` clause.
+
+```swift
+func greet(person: [String: String]) {
+    guard let name = person["name"] else {
+        return
+    }
+
+    print("Hello \(name)!")
+```
+
+Any variables/constants  assigned are available for the rest of the code block that the statement appears in.
+
+If the `else` branch is executed, it must transfer control to exit the code block by using a control transfer statement such as return, break, continue, throw, or `fatalError(_:file:line:)`.
+
+`guard` improves readability of your code. It lets you write the code that's typicaly executed without wrapping it in an `else` block so that it handles a violated requirement. 
+
+## Checking API Availability
+
+Swift checks API availability ensures that you don't accidentally use APIs that are unavailable. If unavailable swift reports an error.
+
+*Use an availability condition* in an `if` or `guard` statement to conditionally execute a block of code to verify that the APIs in that block of code are available:
+
+```swift
+if #available(ios 10, macOS 20.12, *) {
+	//use iOS 10 APIs on iOS, and use macOS 10.12 APIs on macOs
+} else {
+	//fall back to earlier iOS and macOS APIs
+}
+```
+
+The availability condition specifies that in iOS, the body of the `if` statement executes only in iOS 10 and later, or macOS 10.12 and later. `*` argument is required and specifies that on any other platform, the body of the `if` executes on the minimum deployment target specified by your target. 
+
+This condition takes a list of [platform names](https://docs.swift.org/swift-book/ReferenceManual/Attributes.html#ID348) and versions:
+
+```swift
+if #available(PLATFORM NAME VERSION, ..., *) {
+	STATEMENTS TO EXXECUTE IF APIs ARE AVAILABLE
+} else {
+	FALL BACK STATEMENTS
+}
+```
+
+
+
+# VI. Functions
+
+*Functions* are named chunks of that performs a specific task. Each has a specfic type: its parameter types and return types. 
+
+## Defining and Calling Functions
+
+*Parameters* are values that the function takes as input. *Return type* is a type of value that the funciton will pass back as output. *Function name* describes the task it performs and you will "call" the function with its name. 
+
+This funtion will take a name as input and return a greeting. It has one input parameter (`String` value) and a return type of `String`:
+
+```swift
+func greet (person: String) -> String {
+	let greeting = "Hello, "  + person + "!"
+	return greeting
+}
+```
+
+Prefix `func` keyword defines the function. The return arrow `->` followed by the type to indicate the function's return type.
+
+Call the function using its definition: 
+
+```swift
+print(greet(person:"Anna"))
+```
+
+## Parameters and Return Values
+
+Functions are not required to define input parameters: `func sayHelloWorld() -> String { }.`
+
+Multiple input parameters are separated by commas. `func greet(person: String, alreadyGreeted: Bool) -> String`.
+
+A function can have multiple return values: `func minMax(array: [int]) -> (min: Int, max: Int)`. Access the tuple by using `TUPLENAME.min` or `TUPLENAME.ma`.
+
+An *optional* tuple can be used if the function has a potential to have "no value".
+
+Function implicity returns the expression if the entire body of the function is a single expression.
+
+## Function Argument Labels and Parameters Names
+
+*Argument label* is written before the argument when calling the function; each argument is written in the function call with its argument label before it. The *parameter name* is used in the function. By default, the argument label is their parameter name.
 
