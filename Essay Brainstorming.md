@@ -25,3 +25,12 @@
 Morals:
 
 - Pursuit of happiness for others/self
+
+
+
+
+
+# Coffee
+
+It starts with grinding the beans. As the blades slice the beans into the crystaline consistency, the aroma is released through the air. Suddenly, I'm awake. A good cup of coffee 
+

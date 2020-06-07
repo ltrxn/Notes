@@ -14,6 +14,22 @@ Overview
 
 [VI. Functions](#VI. Functions)
 
+[VII. Closures]() -
+
+[VIII. Enumerations]() -
+
+[IX. Classes and Structures](# IX. Classes and Structures)
+
+[X.Properties]()
+
+[XI. Methods]()
+
+[XII. Subscripts]()-
+
+[XIII. Inheritance]()
+
+[XIV. Initialization]()
+
 ---
 
 
@@ -1004,4 +1020,35 @@ Function implicity returns the expression if the entire body of the function is 
 ## Function Argument Labels and Parameters Names
 
 *Argument label* is written before the argument when calling the function; each argument is written in the function call with its argument label before it. The *parameter name* is used in the function. By default, the argument label is their parameter name.
+
+```swift
+func someFuction(argumentLabel parameterName:Int) {
+	//use parameterName to refer to the argument value
+}
+```
+
+use `_` if you don't want an argument label: `func someFunction(_ parameterName:int)`
+
+## Default Parameter Values
+
+`func someFunction( parameterWithDefault: Int = 12)` If the default value is defined, you can omit that parameter when calling the function. 
+
+## Variadic Parameters
+
+A *variadic parameter* written by inserting `...` after parameter's type name to to accept zero or more values of that type.
+
+```swift
+func arithmeticMean(_ numbers: Double...) -> {
+	var total: Double = 0
+  for number in numbers {
+  	total += number
+  }
+  return total / Double(numbers.count)
+}
+
+//calling the method
+arithmeticMean(1, 2, 3, 4, 5)
+```
+
+## In-Out Parameters
 
