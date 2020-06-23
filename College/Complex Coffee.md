@@ -1,4 +1,4 @@
-​	It starts with grinding the beans. The blades slice the beans into the crystaline consistency, releasing its aroma through the air. Suddenly, I'm wide awake. This combination of the relaxing process, savory smell, and  wonderful taste let's me know that another great day awaits. There is so much complexity in this seemingly simple drink, coffee.
+It starts with grinding the beans. The blades slice the beans into the crystaline consistency, releasing its aroma through the air. Suddenly, I'm wide awake. This combination of the relaxing process, savory smell, and  wonderful taste let's me know that another great day awaits. There is so much complexity in this seemingly simple drink, coffee.
 
 ​	My parents are avid coffee drinkers, but gave little thought to the process. I grew up thinking that coffee was bitter and one dimensional. Appalled, I thought, "how could people voluntarily consume dirt water every day." This question prompted me to visit the coffee world. Unexpected to me, there is science behind every aspect of coffee, from the roasting process, water-coffee ratios, to even the grind size. I learned that I completely underestimated this drink. I decided to give it another shot with the new knowledge I had obtained, I made myself a cup of coffee from freshly grinded beans that turned out to be smooth and flavorful, and that was when my appreciation began. 
 
@@ -6,19 +6,35 @@
 
 
 
+Focal points
+
+- Wanting to know why.
+- Where my drive for pursuit of knowledge comes from.
+- Analogies between coffee and my view on research.
+- Big picture
 
 
 
+Format
 
-- So many people drink coffee ritually everday, but never give it more thought (cough cough my parents)
-- Discovering the reason behind the appeal led to finding out that it's more complex than I ever thought.
-  - Learned to never take things at face-value; everything is more complex than we thought
-- Math
+- Hook: so many people drink coffee ritually everday, but never give it more thought (cough cough my parents)
+- Begining of story: Discovering the reason behind the appeal led to finding out that it's more complex than I ever thought.
+  - Lesson: Learned to never take things at face-value; everything is more complex than we thought
+- Connection 1: Math
   - Sometimes we are taught to do x and y without giving much thought
-  - I would always probe deeper.
-  - Similar to coffee because people accept it like that because it works (caffeine boost)
+  - I'd always probe deeper
+  - Analogy to coffee: People accept coffee's taste because they just want to get that caffeine boost = people accepting formulas without understanding it because they just want to find the answer.
 - Socially
   - Coffee to me means one on one time with other people. When I say wanna grab a coffee, I mean wanna talk and learn about each others perspevtive.
 - Conclusion
   - Dumb comparison, but it's what I think about when I sit down to enjoy a good ol' cup of joe.
 
+
+
+big picture, chemistry=scientific way
+
+not Average person
+
+order cup of coffee, taste think of process
+
+Acknowledge social --> 

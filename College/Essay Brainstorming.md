@@ -28,9 +28,8 @@ Morals:
 
 
 
+honors college -->deadline pay attention
 
+find essay questions on naviance.
 
-# Coffee
-
-It starts with grinding the beans. As the blades slice the beans into the crystaline consistency, the aroma is released through the air. Suddenly, I'm awake. A good cup of coffee 
-
+coffee socila --> but take it further/deeper.

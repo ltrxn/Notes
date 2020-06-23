@@ -20,15 +20,15 @@ Overview
 
 [IX. Classes and Structures](# IX. Classes and Structures)
 
-[X.Properties]()
+[X.Properties](# X. Properties)
 
-[XI. Methods]()
+[XI. Methods](# XI. Methods)
 
 [XII. Subscripts]()-
 
-[XIII. Inheritance]()
+[XIII. Inheritance](# XIII. Inheritance)
 
-[XIV. Initialization]()
+[XIV. Initialization](# XIV. Initialization)
 
 ---
 
@@ -1029,11 +1029,11 @@ func someFuction(argumentLabel parameterName:Int) {
 
 use `_` if you don't want an argument label: `func someFunction(_ parameterName:int)`
 
-## Default Parameter Values
+### Default Parameter Values
 
 `func someFunction( parameterWithDefault: Int = 12)` If the default value is defined, you can omit that parameter when calling the function. 
 
-## Variadic Parameters
+### Variadic Parameters
 
 A *variadic parameter* written by inserting `...` after parameter's type name to to accept zero or more values of that type.
 
@@ -1050,5 +1050,657 @@ func arithmeticMean(_ numbers: Double...) -> {
 arithmeticMean(1, 2, 3, 4, 5)
 ```
 
-## In-Out Parameters
+### In-Out Parameters
 
+Changing a value of a parameter within the body of that function results in a compile-time error. If you do want to modify a parameter's value and keep those changes after the call ends, then define that parameter as an *in-out parameter* using the keyword `inout` right before the parameter's type. 
+
+Only variables can be passed as the argument for an in-out parameter, no literals or constants. Place an ampersand (`&`) before a variable's name when you pass it as an argument to indicate it can be modified. Example function:
+
+```swift
+func swapTwoInts(_ a: inout Int, _ b: inout Int) {
+	let tempA = a
+	a=b
+	b= tempA
+}
+
+//in the body:
+var intOne = 3
+var intTwo = 4
+swapTwoInts(&intOne, &intTwo)
+```
+
+## Function Types
+
+Each function has a specific *function type* made up of the parameter types and return type. Example: this function's type is `(Int, Int) -> Int`. Read as "a function that has two parameters, both of type `Int`, and returns a value of type `Int`"
+Define a constant or variable to be a function type and assign it a function:
+
+```swift
+var mathFunction: (Int, Int) -> Int = addTwoInts //could have been inferred
+//and use it later:
+print(mathFunction(2,3))
+```
+
+Function types can also be used as parameters or return types.
+
+## Nested Functions
+
+You can define functions inside the bodies of other functions. These nested functions are hidden from the outside world but can be called by their enclosing function. The enclosing function can return one of its nested function to be used in another scope.
+
+# IX. Classes and Structures
+
+*Structures* and *classes* are general and flexible constructs used as building blocks. Define properties and methods to  your strucutres and classes using the same syntax to define constants, variables, and functions. 
+
+
+
+## Comparing structures and classes
+
+Both structures and classes have the following in common:
+
+- Define properties to store values
+- Define methods to provide functionality
+- Define subscripts to provide access to their values using subscript syntax
+- Define initializers to set up their initial state
+- Be extended to expand their functionality beyond a default implementation
+- Conform to protocols to provide standard functionality of a certain kind
+
+Classes have additional capabilities but are more complex:
+
+- Inheritance enables one class to inherit the characteristics of another.
+- Type casting enables you to check and interpret the type of a class instance at runtime.
+- Deinitializers enable an instance of a class to free up any resources it has assigned.
+- Reference counting allows more than one reference to a class instance.
+
+
+
+**Defining a structure and class:**
+
+```swift
+struct Resolution {
+	//structure definition
+  var width = 0
+  var height = 0
+}
+class VideoMode {
+  //class definition
+  var resolution = Resolution()
+  var framerate = 0.0
+  var name: String? //default value nil
+}
+```
+
+**Structure and class instances:**
+
+```swift
+let someResolution = Resolution()
+let someVideoMode = VideoMode()
+//properties are initialized to their default values
+```
+
+**Access properties:**
+
+```swift
+//dot syntax
+print("Width is \(someResolution.width))
+//subproperties:
+print(someVideoMode.resolution.width)
+```
+
+**Initialize:**
+
+```SWIFT
+let vga = Resolution(width: 640, height: 480)
+```
+
+All structures have an automatically generated *memberwise initializer*, which initializes the member properties of new structure instances. 
+
+## Structures and enumerations are value types
+
+A *value type* is a type whose valueis copied when it's assigned to a variable/constant or passed to a function. All basic types are value types. Structures and enumerations are value types. 
+
+```swift
+let hd = Resolution(width: 1920, height: 1080)
+var cinema = hd //A copy of hd was made and assigned to cinema
+```
+
+if cinema.width was changed, the hd.width would remain unchanged
+
+## Classes are reference types
+
+*Reference types* are not copied when assigned or passed; the same existing instance is used.
+
+**Identity Operators**
+
+- `===` "identical to" checks whether two constants or variables refer to exactly the same instance of a class. It's different to *equal to*, which means two instances have equal values (which you decide what qualifies as being equal to).
+- `!==` "not identical to"
+
+**Pointers**
+
+Swift uses *pointers* to refer to addresses in memory. 
+
+# X. Properties
+
+*Properties* associate values with a particular class, structure, or enumeration. They typically have a particular type.
+
+
+
+## Stored properties
+
+*Stored properties* store constant ("constant stored properties") and variable values ("value stored properties") as part of an instance. Introduce with `var` or `let` keyword.
+
+Default value can be set as part of its definition. Stored property value can be set or modified during initialization:
+
+```swift
+struct FixedLengthRange {
+	var firstValue: Int
+	let length: Int
+}
+var exampleRange = FixedLengthRange(firstValue: 0, length: 3)
+exampleRange.firstValue = 6;
+//length cannot be changed because it is a constant
+```
+
+### Lazy stored properties
+
+A property whose initial value is not calculated until the first time it is used. Indicate a lazy stored property using `lazy` modifer before its declaration (must be a variable).
+
+Use when the property is dependent on outside factors that are known only after the instance's initialization.
+
+## Computed Properties
+
+*Computed properties* calculate a value. They provide a getter and an optional setter to retrieve and set other properties and values indirectly.
+
+```swift
+struct Point {
+    var x = 0.0, y = 0.0
+}
+struct Size {
+    var width = 0.0, height = 0.0
+}
+struct Rect {
+    var origin = Point()
+    var size = Size()
+    var center: Point {
+        get {
+            let centerX = origin.x + (size.width / 2)
+            let centerY = origin.y + (size.height / 2)
+            return Point(x: centerX, y: centerY)
+        }
+        set(newCenter) {
+            origin.x = newCenter.x - (size.width / 2)
+            origin.y = newCenter.y - (size.height / 2)
+        }
+    }
+}
+var square = Rect(origin: Point(x: 0.0, y: 0.0),
+                  size: Size(width: 10.0, height: 10.0))
+let initialSquareCenter = square.center
+square.center = Point(x: 15.0, y: 15.0)
+print("square.origin is now at (\(square.origin.x), \(square.origin.y))")
+// Prints "square.origin is now at (10.0, 10.0)"
+```
+
+### Read-only computer properties
+
+Returns a value, but cannot be set to a different value:
+
+```swift
+struct Cuboid {
+	var width = 0.0, height = 0.0, depth = 0.0
+	var volume: Double {
+		return width*height*depth
+	}
+}
+```
+
+## Property Observers
+
+*Property observers* can monitor changes in a property's value, and respond with custom actions.
+
+Cannot be added to lazy stored properties. Can be added to inherited properties.
+
+- `willSet` is called before the value is stored. The passed new property value acts as a constant parameter which you must specify a name for (default name `newValue`)
+- `didSet` is called immediately after new value is stored. (Default name `oldValue`)
+
+```swift
+class StepCounter {
+    var totalSteps: Int = 0 {
+        willSet(newTotalSteps) {
+            print("About to set totalSteps to \(newTotalSteps)")
+        }
+        didSet {
+            if totalSteps > oldValue  {
+                print("Added \(totalSteps - oldValue) steps")
+            }
+        }
+    }
+}
+```
+
+
+
+## Property Wrappers
+
+*Property wrapper* manages how a property is stored and the code that defines a property.
+
+`TwelveOrLess` structure ensures the value it wraps is always 12 or less:
+
+```swift
+@propertyWrapper
+struct TwelveOrLess {
+  private var number: Int
+  init() { self.number = 0 }
+  var wrappedValue: Int {
+    get { return number }
+    set { number = min(newValue, 12) } //stores 12 if larger than 12.
+  }
+}
+```
+
+Now apply this wrapper to a property by writing the wrapper's name before the property:
+
+```swift
+struct SmallRectangle {
+	@TwelveOrLess var height: Int
+	@TwelveOrLess var width: Int
+}
+```
+
+When you apply a wrapper to a property, the compiler synthesizes code that provides storage for the wrapper and code that provides access to the property through the wrapper
+
+### Initial value for wrapped properties
+
+Codes that use this property wrapper can't specify a different initial value for the property that's being wrapped, so you need to create a initializer for the property wrapper. Expanded version of `TwelveOrLess`:
+
+```swift
+@propertyWrapper
+struct SmallNumber {
+    private var maximum: Int
+    private var number: Int
+
+    var wrappedValue: Int {
+        get { return number }
+        set { number = min(newValue, maximum) }
+    }
+
+    init() {
+        maximum = 12
+        number = 0
+    }
+    init(wrappedValue: Int) {
+        maximum = 12
+        number = min(wrappedValue, maximum)
+    }
+    init(wrappedValue: Int, maximum: Int) {
+        self.maximum = maximum
+        number = min(wrappedValue, maximum)
+    }
+}
+```
+
+When you apply it to a property but don't specify initial value, `init()` is used. When initial value is specified, `init(wrappedValue:)` is used to set up the wrapper. `=1` is translated to a call to `SmallNumber(wrappedValue: 1)` here:
+
+```swift
+struct UnitRectangle {
+    @SmallNumber var height: Int = 1
+    @SmallNumber var width: Int = 1
+}
+```
+
+To use `init(wrappedValue:maximum:)` :
+
+```swift
+struct NarrowRectangle {
+    @SmallNumber(wrappedValue: 2, maximum: 5) var height: Int
+    @SmallNumber(maximum: 9) var width: Int = 1
+  	//specied initial value using assignment
+}
+```
+
+
+
+### Projecting value from property wrapper
+
+A property wrapper can define a *projected value* that can be accessed by putting a dollar sign (`$`) in front of the name of the wrapped value. 
+
+If a `var projectedValue: bool` was added to `SmallNumber` property wrapper and is used like this:
+
+```swift
+struct SomeStructure {
+	@SmallNumber var someNumber: Int
+}
+
+print(someStructure.$someNumber)
+//would access the wrapper's projected value
+```
+
+## Global and Local Variables
+
+Global variables are variables defined outside of any function, method, closure, or type context. Local variables are variables defined within a closure context.
+
+*Stored variables* provide storage for a value of a certain type and allow that value to be set and retrieved.
+
+*Computer variables* define observers for stored variables. They calculate their value rather than storing it, written in teh same way as computed properties.
+
+## Type Properties
+
+*Type properties* are properties associated with the type itself, not to any one instance of that type. There can only be one copy of these properties. Used to define values that are universal to *all* instances of a particular type (like a constant that all instances can use). 
+
+Type properties are written as part of the type's using the `static` keyword. For compute type properties that can be overriden by subclasses, use the `class` keyword instead:
+
+```swift
+class SomeClass {
+	static var storedTypeProperty = "some value"
+	static var computedType Property:Int {
+		return 27
+	}
+	class var overridableComputedTypeProperty: Int {
+		return 107
+	}
+}
+```
+
+
+
+### Querying and setting
+
+Type properties are queried and set using the dot syntax.
+
+```swift
+SomeClass.storedTypeProperty = "another value"
+```
+
+Notice the new value was set on the *type* (`SomeClass`), and not on an instance of `SomeClass`
+
+# XI. Methods
+
+*Methods* are functions associated with a particular type. Classes, structures, and enumerations can all define instance or type methods.
+
+## Instance Methods
+
+*Instance Methods* are functions that belong to instances of a particular class, structure, or enumeration. An instance method has implicit access to all other instance methods and properties of that type.
+
+This  `Counter` class has three instance methods.:
+
+```swift
+class Counter {
+    var count = 0
+    func increment() {
+        count += 1
+    }
+    func increment(by amount: Int) {
+        count += amount
+    }
+    func reset() {
+        count = 0
+    }
+}
+```
+
+These instance methods are called using dot syntax:
+
+```swift
+let counter = Counter()
+counter.increment(by: 5)
+counter.reset()
+```
+
+### Self property
+
+Every instance of a type has an implicit property called `self` which is the instance itself. Use it to refer to the current instance within its own instance method:
+
+```swift
+func increment() {
+	self.count +=1
+}
+```
+
+Often assumed that `count` refers to `self.count`. When parameter name of a method has teh same name as a property of that instance, then the `self` property refers to the property of the instance. 
+
+### Modifying value types
+
+Strucutres and enumeration are *value type*, meaning that its properties cannot be modified within its instance methods. However, if you do need to modify the properties of your strucutre or enumeration, you utilize *mutating* behavior for that method. Now, the method can mutate ("change") its properties from within the method. 
+
+Place the `mutating` keyword before the `func` keyword:
+
+```swift
+struct Point {
+	var x = 0.0, y = 0.0
+	mutating func moveBy (x deltaX: Double, y deltaY: Double) {
+		x += deltaX
+		y += deltaY
+	}
+}
+```
+
+The mutating `moveBy(x:y:)` method modifies the point on which it was called instead of returning a new point. Calling a mutated method on a constant would not work.
+
+### Assigning to self within a mutating method
+
+Use mutating methods to to assign a new instance to `self` property.
+
+Same `Point` example can be written like this:
+
+```swift
+struct Point {
+	var x = 0.0, y = 0.0
+	mutating func moveBy (x deltaX: Double, y deltaY: Double) {
+		self = Point(x: x+deltaX, y: y+deltaY)
+	}
+}
+```
+
+You could use `self` to be a different case from the same enumeration. This code switches cycles between three different power states when `next()` is called:
+
+```swift
+enum TriStateSwitch {
+    case off, low, high
+    mutating func next() {
+        switch self {
+        case .off:
+            self = .low
+        case .low:
+            self = .high
+        case .high:
+            self = .off
+        }
+    }
+}
+```
+
+## Type Methods
+
+Define methods that are called on teh typ eitself by writing `static` keyword (or `class` for classes) before `func`.
+
+Type methods are called with dot syntax on the type:
+
+```swift
+class SomeClass {
+    class func someTypeMethod() {
+        // type method implementation goes here
+    }
+}
+SomeClass.someTypeMethod()
+```
+
+Inside a type method, `self` property refers to the type itself, and not the instance. A type method can call another type method using just the method's name (no prefix).
+
+`@discardableResult` attribute marks functions that have a return value that can be ignored.
+
+# XIII. Inheritance
+
+A class can *inherit* characteristics from another class. This class will be known as the *subclass* and the class it inherits from is known as its *superclass*. 
+
+Inheritance is a fundamental behavior that is unique to the class type. Classes can call and access methods, properties, and subscripts belonging to their superclass or override them. 
+
+Property observers can be added to inherited properties.
+
+## Defining a Base Class
+
+Any class that does not *inherit* is known as a *base class*.
+
+This `Vehicle` class defines common characteristics for an arbitrary vehicle. Needs to be refined:
+
+```swift
+class Vehicle {
+	var currentSpeed = 0.0
+  var description: String {
+    return "travelling at \(currentSpeed) miles per hour"
+  }
+  func MakeNoise() { }
+}
+
+//create new instance with initializer syntax
+let someVehicle = Vehicle()
+```
+
+## Subclassing
+
+A subclass will inherit characteristics that can be refined and you can add new characteristics.
+
+Indicate a subclass has a superclass by writing the subclass name before the superclass name, separated by a colon:
+
+```swift
+class SomeSubclass: SomeSuperclass {}
+```
+
+`Bicycle` will be a subclass of `Vehicle`:
+
+```swift
+class Bicycle: Vehicle {
+	var hasBasket = false
+}
+```
+
+Subclasses can be subclassed. A tandem is a two-seater bicycle:
+
+```swift
+class Tandem: Bicycle {
+	var currentNumberOfPassengers = 0
+}
+```
+
+## Overriding
+
+A subclass uses *overriding* to provide its own custom implementation of a method, property, or subscript. 
+
+Prefix overriding definition with `override` keyword. It prompts the compiler to check that your overriding class's superclass has a declaration that matches the one you provided.
+
+### Accessing Superclass 
+
+Access the superclass version of the method, prefix, or subscript using the `super` prefix.
+
+- `super.someMethod()` can be called within the overriden method named `someMethod()`. 
+- Overriden proeprty `someProperty` can access superclass version as `super.someProperty` within the overriding getter or setter implementation.
+
+### Overriding Methods
+
+Provide a tailored or alternative implementation of the method within your subclass.
+
+A new subclass of `Vehicle` called `Train`:
+
+```swift
+class Train: Vehicle {
+	override func makeNoise() {
+		print("Choo choo")
+	}
+}
+```
+
+### Overriding Properties
+
+Provide custom getter and setter for that property, or to add property observers to enable the overriding property to observe when the underlying property value changes
+
+An inherited read-only property can be presented as a read-write property by providing a getter and setter. You cannot do the opposite.
+
+`Car` is a subclass of `Vehicle` which modifies the `description` property:
+
+```swift
+class Car: Vehicle {
+    var gear = 1
+    override var description: String {
+        return super.description + " in gear \(gear)"
+    }
+}
+```
+
+**Override property observers**
+
+The `AutomaticCar` class represents a car with an automatic gearbox:
+
+```swift
+class AutomaticCar: Car {
+    override var currentSpeed: Double {
+        didSet {
+            gear = Int(currentSpeed / 10.0) + 1
+        }
+    }
+}
+```
+
+Now, whenever `currentSpeed` is set, the `gear` property is also set.
+
+## Preventing Overrides
+
+Prevent a method, property, or subscript from being overriden by marking it as *final*. the `final` modifier is placed before the introducer keyword (`final var`, `final func`, `final class func`, or `final subscript`)
+
+Attempts to override will report as a compile-time error.
+
+An entire class can be marked final by writing `final` before `class` keyword in class definition. Any attempts to subclass will not work.
+
+# XIV. Initialization
+
+*Initialization* is the process of preparing an instance of a class, structure, or enumeration for use. Sets up for the instance to be ready to use.
+
+## Setting Initial Values for Stored Properties
+
+All stored properties *must* have an initial value.
+
+**Initializers** are called to create a new instance. Written using the `init` keyword:
+
+```swift
+init() {
+  //perform initializations here
+  //you can set initial values here
+}
+```
+
+**Default property values** specified as part of the declaration:
+
+```swift
+struct Fahrenheit {
+	var temperature = 32.0
+}
+```
+
+## Customizing Initialization
+
+*Initialization parameters* defines values that customizes the initialization process.
+
+Two custom initializers can be used for `Celsius` structure. Last initializer has a clear intent without argument label:
+
+```swift
+struc Celsius {
+	var temperatureInCelsius Double
+		init(fromFahrenheit fahrenheit: Double) {
+    	temperatureInCelsius = (fahrenheit - 32.0) / 1.8
+    }
+    init(fromKelvin kelvin: Double) {
+    	temperatureInCelsius = kelvin - 273.15
+    }
+  	init(_ celsius: Double) {
+      temperatureInCelsius = celsius
+    }
+}
+```
+
+
+
+## Default Initializers
+
+## Class Inheritance and Initialization
+
+## Failable Initializers
+
+## Required Initializers
+
+## Setting a Default Property Value with a Closure or Function

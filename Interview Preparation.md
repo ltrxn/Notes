@@ -28,11 +28,13 @@
     - What are somethings I can learn to do or study right now?
     - What are the next steps and when will I hear back from you?
 
+Auto cad, Revit, restocking paper, notes, drawing packets, assembling, ship, circuiting, surveying
+
+link for learning 
+
+thermal magnetic breaker
 
 
 
-
-
-
-
+when can istart/
 
