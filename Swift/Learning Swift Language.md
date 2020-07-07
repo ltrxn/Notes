@@ -1639,7 +1639,7 @@ class AutomaticCar: Car {
 
 Now, whenever `currentSpeed` is set, the `gear` property is also set.
 
-## Preventing Overrides
+## Preventing Overrides  
 
 Prevent a method, property, or subscript from being overriden by marking it as *final*. the `final` modifier is placed before the introducer keyword (`final var`, `final func`, `final class func`, or `final subscript`)
 
@@ -1676,7 +1676,7 @@ struct Fahrenheit {
 
 *Initialization parameters* defines values that customizes the initialization process.
 
-Two custom initializers can be used for `Celsius` structure. Last initializer has a clear intent without argument label:
+Two custom initializers can be used for `Celsius` structure. Last initializer has a clear intent without the need for argument label:
 
 ```swift
 struc Celsius {
@@ -1691,16 +1691,264 @@ struc Celsius {
       temperatureInCelsius = celsius
     }
 }
+
+let boilingPointOfWater = Celsius(fromFahrenheit: 212.0)
+let freezingPointOfWater = Celsius(fromKelvin:273.15)
 ```
 
+Initialization parameters have both a parameter name to be used within the body (`fahrenheit`) and one as an argument label when calling the initializer (`fromFahrenheit`).
 
+Use **optional property types** when a property is logically allowed to have "no value", you can declare the property type to be *optional*. These are automatically initialized with `nil`.
+
+**Constant properties** can have a value assigned to it at any point during initialization, but not after.
 
 ## Default Initializers
 
+A *default initialzer* is provided for any structure or class that provides a default value for all its property. It creates a new instance with all its properties set to their default value.
+
+Structures also recieve a *memberwise initializer* even if the properties don't have default values. Example structure `Size` has two properties so it receives an `init(width:height:)` memberwise initializer:
+
+```swift
+struct Size {
+	var width = 0.0, height = 0.0
+}
+let twoByTwo = Size(width: 2.0, height: 2.0)
+let zeroByTwo = Size(height:2.0) //one property was omitted so uses default value
+```
+
 ## Class Inheritance and Initialization
+
+All a class's stored properties *must* be assigned an initial value during initialization. 
+
+**Designated initializers** fully initializes all properties and calls on superclass initializers. These are typically the primary initializers and have very few. Every class must have at least one designated initializer, satisfied by inheriting their superclass's designated initializer. They are written in the same format:
+
+```swift
+init(PARAMETERS) {
+	STATEMENTS
+}
+```
+
+**Convenience initializer** are secondary supporting initializers. These can call on designated initializers. Use these whenever a shortcut to a common initialzation pattern will save time or clarify intent. Use the `convenience` modifier:
+
+```SWIFT
+convenience init(PARAMETERS) {
+	STATEMENTS
+}
+```
+
+Here is an example of a convenience initialzer (`init()`) calling on the designated initializer (`init(name:)`):
+
+```swift
+class Food {
+	var name: String
+	init(name: String) {
+		self.name = name
+	}
+	convenience init() {
+		self.init(name:"[Unnamed]")
+	}
+}
+```
+
+Food does not have a superclass so `super.init()` was not needed. A second class in the hierarchy introduces a new property and two initializers:
+
+```swift
+class RecipeIngredient: Food {
+    var quantity: Int
+    init(name: String, quantity: Int) {
+        self.quantity = quantity
+        super.init(name: name)
+    }
+    override convenience init(name: String) {
+        self.init(name: name, quantity: 1)
+    }
+}
+```
+
+`init(name: String, quantity: Int)` is `RecipeIngredient`'s only designated initializer. The convenience initializer `init(name:String)` takes the same parameter is the *designated* initializer from `Food` so you must mark it with the `override` modfier. Because `RecipeIngredient` provided an implementation of all its superclass's designated initializers, it automatically all of its superclass's convenience initialzers too: calling `init()` delegates to the `RecipeIngredient`'s version of `init(name:String)` rather than the food version.
+
+All three of these initializers can be used:
+
+```swift
+let oneMysterItem = RecipeIngredient()
+let oneBacon = RecipeIngredient(name: "Bacon")
+let sixEggs = RecipeIngredeitn(name: "Egg", quantity: 6)
+```
+
+```swift
+class ShoppingListItem: RecipeIngredient {
+    var purchased = false
+    var description: String {
+        var output = "\(quantity) x \(name)"
+        output += purchased ? " ✔" : " ✘"
+        return output
+    }
+}
+```
+
+Because `ShoppingListItem` provides a default value for all of the properties it introduces and does not define any initializers itself, `ShoppingListItem` automatically inherits *all* of the designated and convenience initializers from its superclass
+
+### Initializer Delegation
+
+Initializers can call on other initializers in a process called *initializer delegation* to eliminate redundencies.
+
+Classes can delegate to initializers from their inheritance using `self.init`.
+
+If a custom initializer is created for a value type, you loose access to the default initializer (or memberwise initializer) for that type.
+
+**Initializer delegation for class type** have the following rules:
+
+- Must call a designated initializer from its immediate superclass.
+- A convenience initializer must call another initializer from the *same* class.
+- A convenience initializer must ultimately all a designated initializer.
+
+Just remember designated initializers must delegate *up* and convenience initializers *across*.
+
+### Two-Phase
+
+Class initialization has two phases. The first phase is when each stored property is assigned an initial value. The second phase begins after, when each class further customizes its stored property.
+
+An object is considered fully initialized once the initial state of all its properties are known.
+
+### Initializer Inheritance
+
+Subclasses do not inherit their superclass initializers by default. You need a custom implementation. 
+
+When a subclass initializer matches a superclass *designated initializer* you are overriding it so you must write the `override` modifier to check that all parameters have been specified. `Override` is not needed on a *convenience* initializer that provides matching implementation (exactly the same) since that superclass convenience initializer can never be directly called by the subclass.
+
+`Vehicle`  is the base class of `Bicycle`, which defines a custom designated initializer, `init()`:
+
+```swift
+class Vehicle {
+    var numberOfWheels = 0
+    var description: String {
+        return "\(numberOfWheels) wheel(s)"
+    }
+}
+let vehicle = Vehicle()
+print("Vehicle: \(vehicle.description)") // Vehicle: 0 wheel(s)
+
+class Bicycle: Vehicle {
+    override init() {
+        super.init()
+        numberOfWheels = 2
+    }
+}
+let bicycle = Bicycle()
+print("Bicycle: \(bicycle.description)") // Bicycle: 2 wheel(s)
+```
+
+The vehicle class provides a default value for all its properties, so it uses the default initializer. `Bicycle` subclass initializer starts with `super.init()` to ensure that `numberOfWheels` is initialized before it modifies it.
+
+If a subclass initializer makes no customization in phase 2 and has a zero-argument designated initialzer, you can omit `super.init()` as it will implicitly call to its superclass's initializer. These two rules allow **automatic initializer inheritance**. Here is an example:
+
+```swift
+class Hoverboard: Vehicle {
+	var color: String
+	init(color: String) {
+		self.color = color
+		//super.init() implicitly called here
+	}
+	override var description: String{
+		return "\(super.description) in a beautiful \(color)"
+	}
+}
+```
 
 ## Failable Initializers
 
+Initialization failure might be triggered by invalid initialization parameter values, the absence of a required external resource, or some other condition.
+
+Put a question mark after a failable initializer's `init` keyword (`init?`). This way, the initializer creates an *optional* vale of the type it initializes. Write `return nil` within a failable initializer to indicate a point at which initialization failure can be triggered.
+
+Example of `Animal` classs, which defines a failable initializer. Initialization failure is triggered if an empty string is found in the `species` value:
+
+```swift
+struct Animal {
+	let species: String
+	init?(species:String) {
+		if species.isEmpty {
+			return nil}
+		}
+		self.species = species
+	}
+}
+```
+
+### Failable Initializers for Enumerations
+
+You can use failable initializers to select an appropriate enumeration case based on parameters. Initializer can fail if the provided parameters do not match an appropriate case:
+
+```swift
+enum TemperatureUnit {
+	case kevin, celsius, fahrenheit
+	init?(symbol:Character) {
+		switch symbol {
+			case "K":
+				self = .kelvin
+			case "C":
+				self = .celsius
+			case "F":
+				self = .fahrenheit
+			default:
+				return nil
+		}
+	}
+}
+```
+
+Same `TemperatureUnit` can be rewritten using raw values to take advantage of `init?(rawValue:)` initializer:
+
+```swift
+enum TemperatureUnit: Character {
+	case kelvin = "k", celsius = "C", fahrenheit = "F"
+}
+
+let unknownUnit = TemperatureUnit(rawValue:"X")
+//not a defined temp unit, so initialization failed.
+```
+
+### Propagation of Initialization Failure
+
+A failable initializer can delegate across to another failable initializer from the same class, structure, or enumeration. 
+
+### Overriding
+
+You can override a superclass failable initializer with a *nonfailable initializer*.
+
+### init! Failable Initializer
+
+A failable initializer can create an optional instance by typing `init?`. Alternatively you can create an implicitly unwrapped optional instance with `init!`.  Can be delegated.
+
 ## Required Initializers
 
+`required` modifier indcates that every subclass must implement that initializer. You must also write `required` modifier before every subclass implementation of said required initializer so that the requirement applies to further subclasses of the chain. `override` is not necessary:
+
+```swift
+class SomeClass {
+	required init() {
+	}
+}
+class SomeSubclass: SomeClass {
+	required init() {}
+	}
+}
+```
+
 ## Setting a Default Property Value with a Closure or Function
+
+If a default value requires setup/customization, use a closure/global function to provide a customized default value. Whenever a new instance is initialized. this closure or function is called, and its return value is assigned as the property's default value. 
+
+Closures or functions typically create temporary value that represents the desired initial state like this:
+
+```swift
+class SomeClass {
+	let someProperty: SometType = {
+		//create a default value inside this closure
+		return someValue
+		//must be the same type as SomeType
+	}()
+}
+```
+
+There is an empty pair of parentheses at the end of the closure. If it's omitted, then you are assign the closure itself to the property, and not the return value of the closure.
