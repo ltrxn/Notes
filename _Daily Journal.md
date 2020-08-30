@@ -14,6 +14,42 @@ E: exercised
 
 R: read
 
+
+
+MONTH OF AUGUST
+
+# August 1, 2020 (SE)
+
+Today is when college applications open. I visited Common App and Coaltion websites and they prompted me to transfer my account to the 2021 application pages. While I did that, my heart raced as if I were nervous. I am seriously confused on whether I will get into any colleges other than University of Maryland. Just as I thought I wouldn't get into COVID-Corps, my current job, I think I won't get into Georgia Tech. However, lone and behold, I did get into COVID-Corps. It gave me so much hope. There are over 1000 applicants and a mere 130 applicants were hired. that is a 13% acceptance rate, and that's actually harder than Georgia Tech's 23%. Gives me hope that maybe I am competitive with my peers. I played multiple games of League of Legends, but it was really entertaining.
+
+Ran 1.95 mi in 16.9 minutes (8:36 min mi) 16 min 2 miles that is  
+
+# August 11, 2020
+
+I did research on Georgia Tech and am planning to do it for every college. The most infuriating part is that information is so spread out and not from the source.
+
+Watching a lot of "day in life" videos got me excited for college and further away from wanting to go to UMD.
+
+# August 12, 2020
+
+My mom's friend's son goes to UW. I texted him asking him to describe what it's like there. I can tell from her eagerness to share that UW marked a very fun and exciting chapter of his life. He described UW as really vigorous and I know that he's a very hardworking guy. It's 30% acceptance rate makes it feasible and actually achievable. I will definitely be adding UW on the list, if they are on common app.
+
+# August 13, 2020
+
+It's been 13 days and I guess I still haven't started my essay. Am I avoiding it on purpose because I know it'll suck? Maybe. I think by Saterday, I'm gonna force myself to write a very rough draft.
+
+# August 14, 2020
+
+Today during piano lessons, I started tearing up. It was the combination of the announcement of how many new songs I must learn and the mention of college. The tear could not be stopped. Ms. Yeh could probably hear the boredom in my playing. The songs took a lot of concentration and frankly, I was worn out.
+
+After lessons, I cried fully. Snot, tears, and juices flowing out of all the holes on my face. I believe it can be worded as such: right now, I have the ability to determine the next four years of my life. I want so much, but my actions do not reflect it. I am afraid to start my essay for fear it will be terrible. What I write in these next three months can change my whole future. This extreme level of pressure causes more fear and therefore avoidance. 
+
+There was this very inspirational quote on this typing speed test. I cannot remember it but it mentioned something about you must attempt before success. I must find it. 
+
+------
+
+MONTH OF JUNE
+
 # June 22, 2020 (PER)
 
 I was going to start a spiritual journey and keep track of that, but I decided on just making a diary. I want to write about my day and feeling every single day this summer.

@@ -14,7 +14,7 @@ Overview
 
 [VI. Functions](#VI. Functions)
 
-[VII. Closures]() -
+[VII. Closures](#VII. Closures)
 
 [VIII. Enumerations]() -
 
@@ -1085,6 +1085,68 @@ Function types can also be used as parameters or return types.
 ## Nested Functions
 
 You can define functions inside the bodies of other functions. These nested functions are hidden from the outside world but can be called by their enclosing function. The enclosing function can return one of its nested function to be used in another scope.
+
+# VII. Closures
+
+*Closures* are self-contained blocks of functionality that can be passed aroudn adn used. They capture and store references to any constants and variables from where they were defined, also called *closing over* these constants nad variables. Functions are a special case of closures and take one of three forms:
+
+- global functions are closures that have a name and don't capture any values
+- nested functions are closures that have a name and can capture values from their enclosing function
+- closure expressions are unnamed closures written in lightweight syntax that can capture values from their surrounding context.
+
+## Closure Expresions
+
+*Closure expressions* are a way to write inline closures in a brief, focused syntax so that you don't have to write the full declaration and name. 
+
+**Example with The Sorted Method**
+
+`sorted(by:)` is a method that sorts an array of values, based on the output of a sorting closure, and returns a new array of the same type and size with the elements in correct order while keeping the original method the same. 
+
+Initial array: `let names = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]`
+
+`sorted(by:)` accepts a closure that takes two arguments (of the same type as the array's content) and returns a `Bool` value that says whether the first value should appear before or after the second value. The sorting closure is of type: `(String, String) -> Bool`.
+
+This is the long way to write the expression:
+
+```swift
+//Long Way
+func backward(_ s1: String, _ s2: String) -> Bool {
+	return s1>s2
+}
+var reversedNames = names.sorted(by: backward)
+```
+
+Closure expression version of `backward(_:_:)` can be written on one or two lines:
+
+```swift
+reversedNames = names.sorted(by: {(s1: String, s2: String) -> Bool in
+	return s1>s2
+})
+```
+
+**Syntax of closure statements:**
+
+```swift
+{ (PARAMETERS) -> RETURN TYPE in
+	STATEMENTS
+}
+```
+
+*PARAMETERS* can be in-out or variadic parameters, or tuples, but can't have a default value. 
+
+**Inferring type from context**
+
+Because the `sorted(by:)` method is being called on an array of strings, it can be assumed that the argument is of type `(String, String) -> Bool`.
+
+## Trailing Closures
+
+## Capturing Values
+
+## Closures are Reference Types
+
+## Escaping Closures
+
+## Autoclosures
 
 # IX. Classes and Structures
 

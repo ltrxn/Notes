@@ -51,3 +51,58 @@ Protocols that describe *what something is*, types, properties, variables, and c
 
 ## Use Terminology Well
 
+- Avoid obscure terms: use "skin", not "epidermis".
+- Terms of art are unecessary. Use the most common word. Only go technical if *precisely* expresses something ambiguous or unclear.
+- No abbreviations
+- Embrace precedent. `sin(x)` is commonly used so no need to use the word `sine`.
+
+# Conventions
+
+## General Conventions
+
+- Document the complexity of any computed property that is not O(1)
+- Prefer methods and properites to free functions.
+  - Free functions only used (1) when there's no obvious `self`: `min(x,y,z)`, (2) when function is inconstrained generic: `print(x)`, or (3) when function syntax is part of established domain notation: `sin(x)`.
+- Names of types/protocols are `UpperCamelCase` and everything else is `lowerCamelCase`.
+- Methods share base names when they share the same meaning or when they operate in distinct domains. 
+  - `func contains(_ other: Point) -> Bool {...}` and `func contains(_ other: Shape) -> Bool {...}` are fine because the methods do the same thing.
+  - an `index()` function that rebuilds the search index and an `index(_, inTable)` function which returns the nth row in a given table are not okay because these methods have different semantics.
+
+## Parameters
+
+`func move(from start: Point, to end: Point)`
+
+- Choose names to serve documentation. Should be make documentation read naturally.
+
+- Use defaulted parameteres when it simplifies common uses.
+
+  - ```swift
+    public func compare(
+    	_ other: String, options: CompareOptions = [],
+    	range: Range? = nil, locale: Locale? = nil
+    	) -> Ordering
+    ```
+
+  - Having members of a method family means excessive documentation (that would be identical) so a single method with defaults is much better.
+
+- Put parameters with defaults towards the end because they are less essential and provide stable initial pattern when invoked.
+
+## Argument Labels
+
+```swift
+func move(from start: Point, to end: Point)
+x.move(from x, to: y)
+```
+
+- Don't use labels when arguments can't be distinguished like `min(num1, num2)`.
+- Initializers that perform value preserving type conversions don't need the first argument label: `Int64(someuInt32)`.
+  - Exception when the first 2 arguments represents parts of a single abstraction: `a.moveTo(x: b, y: c).
+- If first argument forms part of a grammatical phrase, omit labels: `x.addSubview(y)`.
+
+# Special Instructions
+
+- Lable tuple members and name closure parameters where they appear. 
+  - Names have explanatory power and can be referenced from documentation comments.
+- Take extra care with unconstrained polymorphism (e.g. `Any`, `AnyObject`) to avoid ambiguities.
+  - Eliminate the ambiguity by naming it more explicity (with argument label).
+
