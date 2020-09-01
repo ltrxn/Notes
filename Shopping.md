@@ -20,6 +20,8 @@ $39 reward  coupon
 
 # AIRPORT
 
+portrait, pet, sports
+
 **BCM94360CS**
 
 https://www.amazon.com/Broadcom-Bcm943602cs-802-11ac-Bluetooth-653-0194/dp/B00XY0GAV6
