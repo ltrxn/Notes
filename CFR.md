@@ -1,4 +1,4 @@
-Fundamentals of Electricity and Fundamentals of Electrical Distribution
+[Fundamentals of Electricity and Fundamentals of Electrical Distribution](https://www.eaton.com/Eaton/ProductsServices/Electrical/Support/Training/101BasicsSeries/)
 
 # Fundamentals of Electricity
 
