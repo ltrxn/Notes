@@ -1,25 +1,33 @@
 # [1] MCV
 
-- [ ] 12.1 Video 1
-- [ ] 12.1 Video 2
-- [ ] 12.1 Worksheet 1
-- [ ] 12.1 Worksheet 2
+- [x] 12.1 Video 1
+- [x] 12.1 Video 2
+- [x] 12.1 Worksheet 1
+- [x] 12.1 Worksheet 2
 
 # [2] Lit
 
 - [x] Copy Slides
+- [ ] Read chapters 1-4
 
 # [3] Research
 
-- [ ] Slides about me
+- [x] Slides about me
+- [ ] Junior project reflections. (assignment on canvas)
 
 # [4] Photography
 
 - [x] Silkwave
-- [ ] Find your favorite photo
+- [x] Find your favorite photo
 
 # Club
 
 - [x] Tell team about kick off
 - [ ] Fill out [sponsorship](https://www.revrobotics.com/team-sponsorship/)
+
+
+
+# OTHER
+
+- [ ] Prep for SAT tutoring (Oct 3)
 
