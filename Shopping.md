@@ -42,6 +42,12 @@ Converter Board: https://www.amazon.com/dp/B079NB8J3B/ref=cm_sw_r_cp_tai_kczhFbX
 
 
 
+**M key adapters**
+
+$22 Expensive: https://www.amazon.com/Ableconn-M2MN-150E-Converter-Board-Module/dp/B079NB8J3B/ref=sr_1_1?dchild=1&keywords=M2+E+Key+Module+to+M+Key+Socket&qid=1599775909&s=electronics&sr=1-1
+
+
+
 # ANNE PRO 2 Mods
 
 Sakurios https://www.reddit.com/r/mechmarket/comments/igwyjx/euuk_h_noxary_x75_11_proto_gmk_hydrobase_novs/
@@ -52,4 +58,24 @@ Aluminum case: https://www.aliexpress.com/item/4000534475823.html?spm=a2g0o.prod
 
 Magsafe USB C cable https://www.aliexpress.com/item/32910537749.html?aff_platform=product&sk=z78QA6M&aff_trace_key=d9fd71ed3964408e9301b329358d0e31-1599324897457-06638-z78QA6M&terminal_id=a23ce87a533c444b96175b36cf66a4c8
 
-Keycaps: https://www.aliexpress.com/item/32947700864.html?spm=a2g0s.9042311.0.0.27424c4ddhcIlz
+KEYCAPS MP SA 9009 (white grey pink) [$72]: https://www.aliexpress.com/item/32947700864.html?spm=a2g0s.9042311.0.0.27424c4ddhcIlz
+
+KEYCAPS Penguin (white blue) [$31]: https://www.banggood.com/MechZone-OEM-Profile-PBT-Sublimation-Penguin-Keycap-for-60-pencent-Anne-pro-2-Royal-Kludge-RK61-Geek-GK61-GK64-Mechanical-Keyboard-p-1605554.html?rmmds=detail-left-hotproducts__3&cur_warehouse=CN
+
+KEYCAPS camping (beige, green, maroon) [$57]: https://www.banggood.com/Camping-Thermal-Sublimation-5-surfaces-Cherry-Profile-PBT-Keycap-for-Mechanical-Keyboard-p-1541877.html?rmmds=buy&cur_warehouse=USA
+
+KEYCAPS Mars (beige orange blue) [$63]: https://www.banggood.com/Mars-Colony-2035-162-Key-XDA-Profile-Dye-sub-PBT-Keycaps-Full-Layout-Keycap-Set-p-1439293.html?rmmds=search&cur_warehouse=CN
+
+KEYCAPS Pudding (white pink) [$18]: https://www.aliexpress.com/item/32866885294.html?spm=a2g0o.productlist.0.0.3a2339222nU3G4&algo_pvid=6fa0b71c-0adf-4f69-a30e-cf16355a73d3&algo_expid=6fa0b71c-0adf-4f69-a30e-cf16355a73d3-14&btsid=0bb0600115998832017272024e2e1c&ws_ab_test=searchweb0_0,searchweb201602_,searchweb201603_
+
+KEYCAPS gmk godspeed r2 (beige blue) [$42]: https://www.banggood.com/KBDfans-Moon-Landing-Mars-Keycaps-XDA-Sublimation-PBT-Two-Color-121-Keys-Mechanical-Keyboard-Keycap-p-1617859.html?rmmds=search&cur_warehouse=CN
+
+KEYCAPS GMK Bread
+
+GP Keycaps Sloth https://novelkeys.xyz/collections/frontpage/products/gmk-sloth-gb?variant=35772750987431
+
+GP Keycaps Beta https://geekhack.org/index.php?topic=108290.0
+
+GP Keycaps Shoko https://geekhack.org/index.php?topic=108028.0
+
+GP SA Espresso https://geekhack.org/index.php?topic=108230.0
